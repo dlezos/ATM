@@ -1,6 +1,7 @@
 package gr.lezos.atm.services;
 
 
+import gr.lezos.atm.common.ErrorCodes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,9 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static gr.lezos.atm.common.Attributes.*;
+import static gr.lezos.atm.common.ErrorCodes.*;
+
 
 /**
  * The ATM service
@@ -23,18 +27,6 @@ import java.util.stream.Stream;
 public class AtmService {
     Logger LOGGER = LoggerFactory.getLogger(AtmService.class);
 
-    public static final Long BILL_20_VALUE = 20L;
-    public static final Long BILL_50_VALUE = 50L;
-
-    public static final String TWENTIES = "twenties";
-    public static final String FIFTIES = "fifties";
-    public static final String ERROR = "error";
-
-    public static final Long VALID_AMOUNT = 0L;
-    public static final Long ERROR_INVALID_AMOUNT = -1L;
-    public static final Long ERROR_ATM_AMOUNT_SURPASSED = -2L;
-    public static final Long ERROR_AMOUNT_TOO_LOW = -3L;
-    public static final Long ERROR_NO_AVAILABLE_COMBINATION = -4L;
 
     /**
      * A list of precalculated combinations (not necessary single solutions)
@@ -51,8 +43,8 @@ public class AtmService {
         put(110L, new HashMap<String, Long>(){{put(TWENTIES, 3L);put(FIFTIES, 1L);}});
     }};
 
-    private Long twenties;
-    private Long fifties;
+    private Long twenties = 0L;
+    private Long fifties = 0L;
 
     /**
      * Initialize the ATM
@@ -70,7 +62,7 @@ public class AtmService {
      * Get the total available amount in the ATM
      * @return the total available amount in the ATM
      */
-    protected Long getAvailableAmount() {
+    public Long getAvailableAmount() {
         return (BILL_20_VALUE * twenties) + (BILL_50_VALUE * fifties);
     }
 
@@ -98,11 +90,11 @@ public class AtmService {
     public Map<String, Long> dispense(Long amount) {
         Map<String, Long> result = new HashMap<>();
         // Check the amount validity
-        Long validationResult = validAmount(amount);
+        ErrorCodes validationResult = validAmount(amount);
         // Check for a valid amount
         if (validationResult == VALID_AMOUNT) {
             result = calculateSolution(amount, twenties, fifties);
-            validationResult = result.get(ERROR);
+            validationResult = errorCode(result.get(ERROR));
         }
         if (validationResult != null && validationResult != VALID_AMOUNT) {
             // Add the validation code as error response
@@ -161,7 +153,7 @@ public class AtmService {
      * @param amount
      * @return
      */
-    protected Long validAmount(Long amount) {
+    protected ErrorCodes validAmount(Long amount) {
         // Check for an amount that requires coins
         if (amount % 10 != 0) {
             return ERROR_INVALID_AMOUNT;
@@ -177,17 +169,17 @@ public class AtmService {
         return VALID_AMOUNT;
     }
 
-    protected static final Map<String, Long> result(Long twenties, Long fifties, Long error) {
+    protected static final Map<String, Long> result(Long twenties, Long fifties, ErrorCodes error) {
         if (error == null) {
             Map<String, Long> result = new HashMap<>();
             result.put(TWENTIES, twenties);
             result.put(FIFTIES, fifties);
             return result;
         }
-        return Collections.singletonMap(ERROR, error);
+        return Collections.singletonMap(ERROR, error.getValue());
     }
 
-    protected static final boolean hasError(Map<String, Long> result) {
+    public static final boolean hasError(Map<String, Long> result) {
         return result.get(ERROR) != null;
     }
 }
