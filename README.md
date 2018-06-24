@@ -1,9 +1,9 @@
 This is both a Spring Boot Web application and a Command Line application
 You need to have Java 8 and Maven installed to build and run the application
 
-Build for <b>Command Line</b>: mvn clean install -P ConsoleApplication<br>
-Build for <b>Web</b>:          mvn clean install<br>
-<b>Run</b>: java -jar target/atm-1.0.0.jar<br>
+Build for <b>Command Line</b>: <pre>mvn clean install -P ConsoleApplication</pre><br>
+Build for <b>Web</b>:          <pre>mvn clean install</pre><br>
+<b>Run</b>: <pre>java -jar target/atm-1.0.0.jar</pre><br>
 
 
 <h1>Assignment:</h1>
