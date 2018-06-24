@@ -4,6 +4,8 @@ package gr.lezos.atm.services;
 import gr.lezos.atm.common.ErrorCodes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import java.util.AbstractMap;
@@ -24,6 +26,7 @@ import static gr.lezos.atm.common.ErrorCodes.*;
  * The ATM service
  */
 @Service
+@Scope(value = ConfigurableBeanFactory.SCOPE_SINGLETON)
 public class AtmService {
     Logger LOGGER = LoggerFactory.getLogger(AtmService.class);
 

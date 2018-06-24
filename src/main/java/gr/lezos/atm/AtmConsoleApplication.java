@@ -1,6 +1,7 @@
 package gr.lezos.atm;
 
 import gr.lezos.atm.common.Attributes;
+import gr.lezos.atm.common.ErrorCodes;
 import gr.lezos.atm.services.AtmService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -36,7 +37,7 @@ public class AtmConsoleApplication {
 					} else {
 						Map<String, Long> result = atmService.dispense(new Long(tokenizer.nextToken()));
 						if (AtmService.hasError(result)) {
-							System.out.println("Error Result: " + result.get(ERROR));
+							System.out.println("Error Result: " + ErrorCodes.errorCode(result.get(ERROR)).getMessage());
 						} else {
 							System.out.println("Disposed: " + result.get(Attributes.TWENTIES) + "*20$ and " + result.get(FIFTIES) + "*50$");
 						}
