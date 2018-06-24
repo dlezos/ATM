@@ -90,7 +90,7 @@ public class AtmService {
      * @param amount The amount of $ to dispense
      * @return A Map containing
      */
-    public Map<String, Long> dispense(Long amount) {
+    public synchronized Map<String, Long> dispense(Long amount) {
         Map<String, Long> result = new HashMap<>();
         // Check the amount validity
         ErrorCodes validationResult = validAmount(amount);
