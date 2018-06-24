@@ -1,4 +1,13 @@
-# ATM
+This is both a Spring Boot Web application and a Command Line application
+You need to have Java 8 and Maven installed to build and run the application
+
+Build for Command Line: mvn clean install -P ConsoleApplication
+Build for Web:          mvn clean install
+Run: java -jar target/atm-1.0.0.jar
+
+
+Assignment:
+
 Backend Developer Test – ATM Simulation
 
 Instructions

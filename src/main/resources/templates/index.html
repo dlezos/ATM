@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>ATM UI</title>
+</head>
+<body>
+<h2 th:if="${error == null && twenties != null && fifties != null}" th:text="${twenties} +'*20$, '+ ${fifties} + '*50$'"></h2>
+<h2 th:if="${error != null}" th:text="${error}"></h2>
+<h3 th:text="${atm}"></h3>
+<table>
+    <tr>
+        <td>
+            <form action="/initialize" method="post">
+                <table>
+                    <tr>
+                        <td width="100">20$ bills:</td>
+                        <td><input type="text" name="twenties"></td>
+                    </tr>
+                    <tr>
+                        <td>50$ bills:</td>
+                        <td><input type="text" name="fifties"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" align="right"><input type="submit" value="Initialize"></td>
+                    </tr>
+                </table>
+            </form>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <form action="/dispense" method="post">
+                <table>
+                    <tr>
+                        <td width="100">Amount:</td>
+                        <td><input type="text" name="amount"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" align="right"><input type="submit" value="Withdraw"></td>
+                    </tr>
+                </table>
+            </form>
+        </td>
+    </tr>
+</table>
+</body>
+</html>
